@@ -16,9 +16,18 @@ class AuthController extends Controller
         return response(['message' => 'The provided credentials do not match our records.'], 401);
     
     }
+
     public function logout(Request $request): Response {
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         return response(['message' => 'The user has been logged out successfully'], 200);
+    }
+
+    public function getAllUsers() {
+        return [];
+    }
+
+    public function register(Request $request) {
+
     }
 }
