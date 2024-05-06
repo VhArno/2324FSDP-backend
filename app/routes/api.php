@@ -16,8 +16,8 @@ use App\Http\Controllers\AuthController;
 */
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::middleware('auth:web')->post('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 
 Route::middleware('auth:sanctum')->get('/user', [AuthController::class, 'getUser']);
 Route::middleware('auth:sanctum')->get('/users', [AuthController::class, 'getAllUsers']);

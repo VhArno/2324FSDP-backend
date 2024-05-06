@@ -14,6 +14,8 @@ class AuthController extends Controller
     public function login(Request $request): Response {
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            $token = $user->createToken('authToken')->plainTextToken;
             return response(['message' => 'The user has been authenticated successfully'], 200);
         }
         return response(['message' => 'The provided credentials do not match our records.'], 401);
@@ -22,19 +24,20 @@ class AuthController extends Controller
     public function logout(Request $request): Response {
         Auth::guard('web')->logout();
         $request->session()->invalidate();
+        $request->user()->currentAccessToken()->delete();
         return response(['message' => 'The user has been logged out successfully'], 200);
     }
 
     public function register(Request $request) {
         $validator = Validator::make($request->all(), [
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'email' => 'required|unique:users',
-            'password' => 'required',
+            'firstname' => 'required|string',
+            'lastname' => 'required|string',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string|min:6',
         ]);
 
         if ($validator->fails()) {
-            return response(['message' => 'User creation failed'], 422);
+            return response()->json(['message' => 'User creation failed'], 422);
         }
 
         $user = new User();
