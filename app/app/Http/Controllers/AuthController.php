@@ -35,7 +35,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => 'User creation failed'], 422);
+            return response()->json(['message' => $validator->errors()], 422);
         }
 
         $user = new User();
@@ -55,6 +55,14 @@ class AuthController extends Controller
     }
 
     public function getUser(Request $request) {
+        return $request->user();
+    }
+
+    public function patchUser(Request $request) {
+        return $request->user();
+    }
+
+    public function deleteUser(Request $request) {
         return $request->user();
     }
 }
