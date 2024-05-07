@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
             $table->text('answer');
-            $table->integer('weight');
+            $table->integer('weight')->nullable();
             $table->foreignId('question_id')->constrained();
             $table->foreignId('specialisation_id')->constrained();
         });
