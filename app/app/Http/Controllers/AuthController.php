@@ -15,7 +15,6 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $user->createToken('authToken')->plainTextToken;
             return response(['message' => 'The user has been authenticated successfully'], 200);
         }
         return response(['message' => 'The provided credentials do not match our records.'], 401);
@@ -24,7 +23,6 @@ class AuthController extends Controller
     public function logout(Request $request): Response {
         Auth::guard('web')->logout();
         $request->session()->invalidate();
-        $request->user()->currentAccessToken()->delete();
         return response(['message' => 'The user has been logged out successfully'], 200);
     }
 
