@@ -31,7 +31,7 @@ class AuthController extends Controller
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:5',
         ]);
 
         if ($validator->fails()) {
@@ -59,10 +59,32 @@ class AuthController extends Controller
     }
 
     public function patchUser(Request $request) {
-        return $request->user();
+        $validator = Validator::make($request->all(), [
+            'firstname' => 'nullable|string',
+            'lastname' => 'nullable|string',
+            'email' => 'nullable|string|email|unique:users',
+            'password' => 'nullable|string|min:5',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 422);
+        }
+
+        $user = $request->user();
+
+        if ($request->filled('firstname')) $user->firstname = $request->input('firstname');
+        if ($request->filled('lastname')) $user->lastname = $request->input('lastname');
+        if ($request->filled('email')) $user->email = $request->input('email');
+        if ($request->filled('password')) $user->password = $request->input('password');
+
+        $user->save();
+
+        return response()->json(['message' => 'User updated', 200]);
     }
 
     public function deleteUser(Request $request) {
-        return $request->user();
+        $user = $request->user();
+        $user->delete();
+        return response(['message' => 'User deleted'], 200);
     }
 }
