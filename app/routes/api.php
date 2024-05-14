@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ResultController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -20,13 +21,18 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 
-Route::get('/user', [AuthController::class, 'getUser'])->middleware('auth:sanctum');
-Route::patch('/user', [AuthController::class, 'patchUser'])->middleware('auth:sanctum');
-Route::delete('/user', [AuthController::class, 'deleteUser'])->middleware('auth:sanctum');
+Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function () {
+    Route::get('/', [AuthController::class, 'getUser']);
+    Route::patch('/', [AuthController::class, 'patchUser']);
+    Route::delete('/', [AuthController::class, 'deleteUser']);
 
-Route::middleware('auth:sanctum')->get('/users', [AuthController::class, 'getAllUsers']);
+    Route::get('/results', [ResultController::class, 'getUserResults']);
+    Route::post('/results', [ResultController::class, 'postResult']);
+});
+
+Route::get('/users', [AuthController::class, 'getAllUsers'])->middleware('auth:sanctum'); // role admins
 
 Route::get('/questions', [QuestionController::class, 'getQuestions']);
-Route::post('/questions', [QuestionController::class, 'addQuestions']);
+Route::post('/questions', [QuestionController::class, 'addQuestions']); // role admins
 
 Route::get('/specialisations', [QuestionController::class, 'getSpecialisations']);
