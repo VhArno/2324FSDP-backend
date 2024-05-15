@@ -30,6 +30,8 @@ Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function () 
     Route::post('/results', [ResultController::class, 'postResult']);
 });
 
+Route::post('/results/mail', [ResultController::class, 'sendResult']);
+
 Route::get('/users', [AuthController::class, 'getAllUsers'])->middleware('auth:sanctum'); // role admins
 
 Route::get('/questions', [QuestionController::class, 'getQuestions']);
