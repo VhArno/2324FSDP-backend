@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ResultResource;
 use App\Models\Specialisation;
 use Carbon\Carbon;
 use App\Models\Result;
@@ -13,8 +14,10 @@ use Illuminate\Support\Facades\Mail;
 
 class ResultController extends Controller
 {
-    function getUserResults() {
+    function getUserResults(Request $request) {
+        $user = $request->user();
 
+        return response(['data' => ResultResource::collection($user->results)], 200);
     }
 
     function postResult(Request $request) {

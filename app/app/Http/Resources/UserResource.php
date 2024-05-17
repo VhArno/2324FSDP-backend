@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
-            'role_id' => $this->role_id,
+            'role' => $this->role->role_name,
             'created_at' => $this->created_at,
             'results' => ResultResource::collection($this->results),
         ];
