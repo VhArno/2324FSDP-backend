@@ -1,0 +1,84 @@
+image: lorisleiva/laravel-docker:latest
+
+before_script:
+  - # Install php modules
+  - # Install composer
+  - # ...
+
+stages:
+  - build
+  - test
+  - deploy
+
+# build stage
+composer:
+  stage: build
+
+  script:
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - cp .env.example .env
+    - php artisan key:generate
+
+  artifacts:
+    expire_in: 1 month
+    paths:
+      - vendor/
+      - .env
+
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-composer
+    paths:
+      - vendor/
+
+npm:
+  stage: build
+  
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}-npm
+    paths:
+      - node_modules/
+
+  script:
+    - npm install
+    - npm run production
+
+  artifacts:
+    expire_in: 1 month
+    paths:
+      - node_modules/
+      - public/css/
+      - public/js/
+
+# test stage
+phpunit:
+  stage: test
+  dependencies:
+    - composer
+  script:
+    - phpunit --coverage-text --colors=never
+
+codestyle:
+  stage: test
+  dependencies: []
+  script:
+    - phpcs --standard=PSR2 --extensions=php --ignore=app/Support/helpers.php app
+
+# deploy stage
+staging:
+  stage: deploy
+  
+  script:
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    #- [[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - ssh-keyscan yourdomain.com >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+
+  environment:
+    name: staging
+    url: http://dev.yourdomain.com
+    
+  only:
+    - master
