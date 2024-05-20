@@ -52,7 +52,7 @@ class AuthController extends Controller
     }
 
     public function getAllUsers() {
-        return [];
+        return response(['data' => UserResource::collection(User::all())], 200);
     }
 
     public function getUser(Request $request) {
