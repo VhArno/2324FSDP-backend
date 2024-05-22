@@ -1,0 +1,22 @@
+h2 {
+    font-size: 1.1em;
+}
+
+header {
+    div {
+        width: 80%;
+
+        img {
+            width: 100%;
+        }
+    }
+}
+
+main {
+    display: flex;
+    flex-flow: column;
+}
+
+footer {
+
+}

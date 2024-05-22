@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use App\Models\Specialisation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,7 +19,7 @@ class ResultMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public Specialisation $specialisation)
+    public function __construct(public Specialisation $specialisation, public User $user)
     {
         //
     }

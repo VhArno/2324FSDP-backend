@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Http\Resources\ResultResource;
 use App\Models\Specialisation;
 use Carbon\Carbon;
@@ -54,8 +55,9 @@ class ResultController extends Controller
             return response()->json(['message' => $validator->errors()], 422);
         }
 
+        $user = $request->user() ? $request->user() : new User();
         $specialisation = Specialisation::findOrFail($request->input('specialisation_id'));
 
-        Mail::to($request->input('email'))->send(new ResultMail($specialisation));
+        Mail::to($request->input('email'))->send(new ResultMail($specialisation, $user));
     }
 }
