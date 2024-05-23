@@ -76,7 +76,10 @@ class ResultController extends Controller
             $user = User::find(3);
         }
 
-        $user->answers()->attach($request->input('answer_id'), ['question_id' => $request->input('question_id')]);
+        $user->answers()->attach($request->input('answer_id'), [
+            'question_id' => $request->input('question_id'),
+            'created_at' =>  Carbon::now()
+        ]);
         $user->save();
 
         return response()->json(['message' => 'User answer has been saved'], 201);
