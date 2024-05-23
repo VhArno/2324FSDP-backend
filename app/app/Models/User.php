@@ -58,6 +58,6 @@ class User extends Authenticatable
     }
 
     public function answers(): BelongsToMany {
-        return $this->belongsToMany(Answer::class);
+        return $this->belongsToMany(Answer::class, 'user_answers', 'user_id', 'answer_id');
     }
 }

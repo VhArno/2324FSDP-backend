@@ -21,6 +21,6 @@ class Answer extends Model
     }
 
     public function user(): BelongsToMany {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'user_answers', 'answer_id', 'user_id');
     }
 }

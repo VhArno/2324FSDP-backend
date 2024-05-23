@@ -16,6 +16,10 @@ class QuestionController extends Controller
 
     }
 
+    public function addAnswers() {
+
+    }
+
     public function getSpecialisations() {
 
     }

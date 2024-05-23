@@ -60,4 +60,25 @@ class ResultController extends Controller
 
         Mail::to($request->input('email'))->send(new ResultMail($specialisation, $user));
     }
+
+    function postUserAnswers(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'question_id' => 'required|numeric|exists:questions,id',
+            'answer_id' => 'required|numeric|exists:answers,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 422);
+        }
+
+        $user = $request->user();
+        if (!$user) {
+            $user = User::find(3);
+        }
+
+        $user->answers()->attach($request->input('answer_id'), ['question_id' => $request->input('question_id')]);
+        $user->save();
+
+        return response()->json(['message' => 'User answer has been saved'], 201);
+    }
 }

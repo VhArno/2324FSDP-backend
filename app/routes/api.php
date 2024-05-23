@@ -33,6 +33,8 @@ Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function () 
 // mail test results
 Route::post('/results/mail', [ResultController::class, 'sendResult']);
 
+Route::post('/results/answers', [ResultController::class, 'postUserAnswers']);
+
 // Get questions & answers for test
 Route::get('/questions', [QuestionController::class, 'getQuestions']);
 
