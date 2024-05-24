@@ -51,10 +51,6 @@ class AuthController extends Controller
         return response()->json(['message' => 'User has been created'], 201);
     }
 
-    public function getAllUsers() {
-        return response(['data' => UserResource::collection(User::all())], 200);
-    }
-
     public function getUser(Request $request) {
         return response(['data' => new UserResource($request->user())]);
     }
