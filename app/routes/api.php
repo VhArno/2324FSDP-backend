@@ -54,9 +54,9 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:sanctum'], function ()
     // Answers & questions
     Route::post('/questions', [QuestionController::class, 'postQuestion'])->middleware('can:create, App\Models\Question');
     Route::patch('/questions', [QuestionController::class, 'patchQuestion'])->middleware('can:update,App\Models\Question');
-    Route::delete('/questions', [QuestionController::class, 'deleteQuestion'])->middleware('can:delete,App\Models\Question');
+    Route::delete('/questions/{id}', [QuestionController::class, 'deleteQuestion'])->middleware('can:delete,App\Models\Question')->whereNumber('id');
 
     Route::post('/answers', [QuestionController::class, 'postAnswer'])->middleware('can:create,App\Models\Answer');
     Route::patch('/answers', [QuestionController::class, 'patchAnswer'])->middleware('can:update,App\Models\Answer');
-    Route::delete('/answers', [QuestionController::class, 'deleteAnswer'])->middleware('can:delete,App\Models\Answer');
+    Route::delete('/answers/{id}', [QuestionController::class, 'deleteAnswer'])->middleware('can:delete,App\Models\Answer')->whereNumber('id');
 }); 
