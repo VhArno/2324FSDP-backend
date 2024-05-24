@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ResultController;
 use App\Models\Answer;
 use App\Models\Question;
@@ -46,17 +47,17 @@ Route::get('/specialisations', [QuestionController::class, 'getSpecialisations']
 // Admin routes
 Route::group(['prefix' => '/admin', 'middleware' => 'auth:sanctum'], function () { // role admins
     // Accounts
-    Route::get('/users', [AuthController::class, 'getAllUsers']);
+    Route::get('/users', [AdminController::class, 'getAllUsers']);
 
     //Results
-    Route::get('/results', [ResultController::class, 'getAllResults']);
+    Route::get('/results', [AdminController::class, 'getAllResults']);
 
     // Answers & questions
-    Route::post('/questions', [QuestionController::class, 'postQuestion'])->middleware('can:create, App\Models\Question');
-    Route::patch('/questions', [QuestionController::class, 'patchQuestion'])->middleware('can:update,App\Models\Question');
-    Route::delete('/questions/{id}', [QuestionController::class, 'deleteQuestion'])->middleware('can:delete,App\Models\Question')->whereNumber('id');
+    Route::post('/questions', [AdminController::class, 'postQuestion'])->middleware('can:create, App\Models\Question');
+    Route::patch('/questions', [AdminController::class, 'patchQuestion'])->middleware('can:update,App\Models\Question');
+    Route::delete('/questions/{id}', [AdminController::class, 'deleteQuestion'])->middleware('can:delete,App\Models\Question')->whereNumber('id');
 
-    Route::post('/answers', [QuestionController::class, 'postAnswer'])->middleware('can:create,App\Models\Answer');
-    Route::patch('/answers', [QuestionController::class, 'patchAnswer'])->middleware('can:update,App\Models\Answer');
-    Route::delete('/answers/{id}', [QuestionController::class, 'deleteAnswer'])->middleware('can:delete,App\Models\Answer')->whereNumber('id');
+    Route::post('/answers', [AdminController::class, 'postAnswer'])->middleware('can:create,App\Models\Answer');
+    Route::patch('/answers', [AdminController::class, 'patchAnswer'])->middleware('can:update,App\Models\Answer');
+    Route::delete('/answers/{id}', [AdminController::class, 'deleteAnswer'])->middleware('can:delete,App\Models\Answer')->whereNumber('id');
 }); 
