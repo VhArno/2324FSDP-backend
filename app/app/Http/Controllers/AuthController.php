@@ -16,6 +16,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
+            $user->tokens()->delete();
             return response(['message' => 'The user has been authenticated successfully'], 200);
         }
         return response(['message' => 'The provided credentials do not match our records.'], 401);
