@@ -13,7 +13,7 @@ class AnswerPolicy
      */
     public function create(User $user): bool
     {
-        return $user->role == 'admin' || $user->role == 'superadmin';
+        return $user->role->role_name == 'admin' || $user->role->role_name == 'superadmin';
     }
 
     /**
@@ -21,7 +21,7 @@ class AnswerPolicy
      */
     public function update(User $user, Answer $answer): bool
     {
-        return $user->role == 'admin' || $user->role == 'superadmin';
+        return $user->role->role_name == 'admin' || $user->role->role_name == 'superadmin';
     }
 
     /**
@@ -29,6 +29,6 @@ class AnswerPolicy
      */
     public function delete(User $user, Answer $answer): bool
     {
-        return $user->role == 'admin' || $user->role == 'superadmin';
+        return $user->role->role_name == 'admin' || $user->role->role_name == 'superadmin';
     }
 }

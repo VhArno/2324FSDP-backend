@@ -47,10 +47,10 @@ Route::get('/specialisations', [QuestionController::class, 'getSpecialisations']
 // Admin routes
 Route::group(['prefix' => '/admin', 'middleware' => 'auth:sanctum'], function () { // role admins
     // Accounts
-    Route::get('/users', [AdminController::class, 'getAllUsers']);
+    Route::get('/users', [AdminController::class, 'getAllUsers'])->middleware('can:viewAny,App\Models\User');
 
     //Results
-    Route::get('/results', [AdminController::class, 'getAllResults']);
+    Route::get('/results', [AdminController::class, 'getAllResults'])->middleware('can:viewAny,App\Models\User');
 
     // Answers & questions
     Route::post('/questions', [AdminController::class, 'postQuestion'])->middleware('can:create, App\Models\Question');
