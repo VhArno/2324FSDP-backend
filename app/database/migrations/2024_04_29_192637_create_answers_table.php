@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->text('answer');
             $table->integer('weight')->nullable();
-            $table->foreignId('question_id')->constrained();
+            $table->foreignId('question_id')->constrained()->onDelete('cascade');
             $table->foreignId('specialisation_id')->constrained();
         });
     }
