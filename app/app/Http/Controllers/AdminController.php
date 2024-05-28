@@ -132,9 +132,9 @@ class AdminController extends Controller
 
         $answer = new Answer();
         $answer->answer = $request->input('answer');
-        $answer->answer = $request->input('weight');
-        $answer->answer = $request->input('question_id');
-        $answer->answer = $request->input('specialisation_id');
+        $answer->weight = $request->input('weight');
+        $answer->question_id = $request->input('question_id');
+        $answer->specialisation_id = $request->input('specialisation_id');
         $answer->save();
 
         return response()->json(['message' => 'Answer has been added'], 201);

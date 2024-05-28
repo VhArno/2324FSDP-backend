@@ -11,6 +11,8 @@ class Answer extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     /* Relations */
     public function specialisation(): BelongsTo {
         return $this->belongsTo(Specialisation::class);
