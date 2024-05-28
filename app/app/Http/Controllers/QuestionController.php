@@ -14,12 +14,8 @@ class QuestionController extends Controller
         return response(['data' => QuestionResource::collection(Question::all())]);
     }
 
-    public function addQuestions() {
-
-    }
-
-    public function addAnswers() {
-
+    public function getQuestion($id) {
+        return response(['data' => new QuestionResource(Question::findOrFail($id))]);
     }
 
     public function getSpecialisations() {

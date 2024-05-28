@@ -14,8 +14,57 @@ use Illuminate\Support\Facades\Validator;
 class AdminController extends Controller
 {
     // Accounts
-    public function getAllUsers() {
-        return response(['data' => UserResource::collection(User::all())], 200);
+    public function getAllUsers(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'role_id' => 'nullable|numeric',
+            'term' => 'nullable|string',
+            'sort' => 'nullable|in:most_recent,less_recent,email,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 422);
+        }
+
+        $users = User::query();
+
+        // role filter
+        if ($request->filled('role_id')) {
+            $users->where('role_id', 'like', $request->role_id);
+        }
+
+        // term filter
+        if ($request->filled('term')) {
+            $terms = explode(' ', $request->term);
+            foreach ($terms as $term) {
+                $users->where('title', 'like', '%' . $term . '%');
+            };
+        }
+
+        if ($request->filled('sort')) {
+            switch ($request->sort) {
+                case 'most_recent':
+                    $users->orderBy('created_at', 'desc');
+                    break;
+                case 'less_recent':
+                    $users->orderBy('created_at', 'asc');
+                    break;
+                case 'email':
+                    $users->orderBy('email');
+                    break;
+                case 'id':
+                    $users->orderBy('id');
+                    break;
+            }
+        }
+
+        return response(['data' => UserResource::collection($users->get())], 200);
+    }
+
+    public function deleteUser($id) {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response(['message' => 'User deleted'], 200);
     }
 
 

@@ -42,9 +42,9 @@ class AccountPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, User $model): bool
+    public function delete(User $user): bool
     {
-        //
+        return $user->role->role_name == 'admin' || $user->role->role_name == 'superadmin';
     }
 
     /**

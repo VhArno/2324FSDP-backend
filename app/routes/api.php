@@ -40,6 +40,7 @@ Route::post('/results/answers', [ResultController::class, 'postUserAnswers']);
 
 // Get questions & answers for test
 Route::get('/questions', [QuestionController::class, 'getQuestions']);
+Route::get('/questions/{id}', [QuestionController::class, 'getQuestion'])->whereNumber('id');
 
 // Get specialisations
 Route::get('/specialisations', [QuestionController::class, 'getSpecialisations']);
@@ -48,6 +49,7 @@ Route::get('/specialisations', [QuestionController::class, 'getSpecialisations']
 Route::group(['prefix' => '/admin', 'middleware' => 'auth:sanctum'], function () { // role admins
     // Accounts
     Route::get('/users', [AdminController::class, 'getAllUsers'])->middleware('can:viewAny,App\Models\User');
+    Route::delete('/users/{id}', [AdminController::class, 'deleteUser'])->middleware('can:delete,App\Models\User')->whereNumber('id');
 
     //Results
     Route::get('/results', [AdminController::class, 'getAllResults'])->middleware('can:viewAny,App\Models\User');
