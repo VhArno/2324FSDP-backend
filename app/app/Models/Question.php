@@ -10,6 +10,8 @@ class Question extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     /* Relations */
     public function answers(): HasMany {
         return $this->hasMany(Answer::class);

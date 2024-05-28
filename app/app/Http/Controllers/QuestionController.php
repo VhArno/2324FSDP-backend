@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Resources\QuestionResource;
+use App\Http\Resources\SpecialisationResource;
 use App\Models\Question;
+use App\Models\Specialisation;
 
 class QuestionController extends Controller
 {
@@ -21,6 +23,6 @@ class QuestionController extends Controller
     }
 
     public function getSpecialisations() {
-
+        return response(['data' => SpecialisationResource::collection(Specialisation::all())]);
     }
 }
