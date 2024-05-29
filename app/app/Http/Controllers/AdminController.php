@@ -36,7 +36,7 @@ class AdminController extends Controller
         if ($request->filled('term')) {
             $terms = explode(' ', $request->term);
             foreach ($terms as $term) {
-                $users->where('title', 'like', '%' . $term . '%');
+                $users->where('firstname', 'like', '%' . $term . '%');
             };
         }
 
@@ -71,6 +71,12 @@ class AdminController extends Controller
     // Results
     public function getAllResults() {
         return response(['data' => ResultResource::collection(Result::all())], 200);
+    }
+
+    // Answers
+    public function getUserAnswers() {
+        $questions = Question::with('answers.user')->get();
+        return response(['data' => $questions], 200);
     }
 
     // Questions & Answers

@@ -54,6 +54,9 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:sanctum'], function ()
     //Results
     Route::get('/results', [AdminController::class, 'getAllResults'])->middleware('can:viewAny,App\Models\User');
 
+    // Answers
+    Route::get('/users/answers', [AdminController::class, 'getUserAnswers'])->middleware('can:viewAny,App\Models\User');
+
     // Answers & questions
     Route::post('/questions', [AdminController::class, 'postQuestion'])->middleware('can:create, App\Models\Question');
     Route::patch('/questions', [AdminController::class, 'patchQuestion'])->middleware('can:update,App\Models\Question');
