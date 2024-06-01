@@ -113,7 +113,7 @@ class AdminController extends Controller
 
         $question->save();
 
-        return response()->json(['message' => 'Question has been updated'], 204);
+        return response()->json(['message' => 'Question has been updated'], 200);
     }
 
     public function deleteQuestion($id) {
