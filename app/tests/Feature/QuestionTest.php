@@ -50,15 +50,41 @@ class QuestionTest extends TestCase
     }
 
     /**
-     * Test the post route of questions as an user
+     * Test the patch route of questions
      */
-    public function test_patch_questions(): void {
-        $response = $this->postJson('/api/admin/questions', ['question' => 'Hoe gaat het vandaag?']);
+    public function test_patch_question(): void {
+        $response = $this->patchJson('/api/admin/questions', ['question' => 'Hoe gaat het vandaag?']);
 
         $response
             ->assertStatus(201)
             ->assertJson([
                 'message' => 'Question has been added',
+            ]);
+    }
+
+    /**
+        * Test the delete route of questions 
+    */
+    public function test_delete_question(): void {
+        $response = $this->deleteJson('/api/admin/questions/10');
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'message' => 'Question has been deleted',
+            ]);
+    }
+
+    /**
+        * Test the delete route of questions with invalid id
+    */
+    public function test_invalid_delete_question(): void {
+        $response = $this->deleteJson('/api/admin/questions/100');
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'message' => 'Question has been deleted',
             ]);
     }
 }
