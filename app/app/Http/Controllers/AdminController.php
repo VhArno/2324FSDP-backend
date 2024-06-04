@@ -87,7 +87,7 @@ class AdminController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'error adding question'], 422);
         }
 
         $question = new Question();
