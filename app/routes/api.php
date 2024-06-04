@@ -28,12 +28,12 @@ Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function () 
     Route::delete('/', [AuthController::class, 'deleteUser']);
 
     Route::get('/results', [ResultController::class, 'getUserResults']);
-    Route::post('/results', [ResultController::class, 'postResult']);
+    Route::patch('/results', [ResultController::class, 'patchResult']);
 });
 
 // mail test results
+Route::post('/results', [ResultController::class, 'postResult']);
 Route::post('/results/mail', [ResultController::class, 'sendResult']);
-
 Route::post('/results/answers', [ResultController::class, 'postUserAnswers']);
 
 // Get questions & answers for test

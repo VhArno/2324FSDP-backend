@@ -25,7 +25,6 @@ class ResultController extends Controller
 
     function postResult(Request $request) {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
             'description' => 'nullable|string',
             'specialisation_id' => 'required|numeric|exists:specialisations,id',
         ]);
@@ -34,15 +33,33 @@ class ResultController extends Controller
             return response()->json(['message' => $validator->errors()], 422);
         }
 
-        $user = $request->user();
-        if (!$user) {
-            $user = User::find(3);
-        }
-
         $result = new Result();
-        $result->name = $request->input('name');
+        $result->name = 'test';
         $result->description = $request->filled('description') ? $request->input('description') : null;
         $result->specialisation_id = $request->input('specialisation_id');
+        $result->user_id = 3;
+
+        $result->save();
+
+        return response()->json(['message' => 'Result has been saved', 'data' => new ResultResource($result)], 201);
+    }
+
+    function patchResult(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'description' => 'nullable|string',
+            'result_id' => 'required|exists:results,id'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 422);
+        }
+
+        $user = $request->user();
+
+        $result = Result::findOrFail($request->result_id);
+        $result->name = $request->input('name');
+        $result->description = $request->filled('description') ? $request->input('description') : null;
         $result->user_id = $user->id;
 
         $result->save();
