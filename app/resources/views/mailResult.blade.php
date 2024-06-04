@@ -8,8 +8,8 @@
     </head>
     <body class="antialiased">
         <header>
-            <div>
-                <img src="https://ci3.googleusercontent.com/meips/ADKq_NbasVeuOFg-wW9KbExCcfk-mhJbbZY0M58Prq0vaVSH6R9-gKKl6E2lWGF6gUSm0ZqCoSjRf1tWg_lyiFQ9ZkBQVQKDV5aoNIfb2LJMFFHsgDbiOyeh2RfQQwPbUbQJSfxNUXd3HQ23qqL__1N0pI3cCiO_UtuNIM9NRdEC_kE9CdKr6QTLaZ1DUDYOotTduc639GkxwJThRTPvnbAcAHlBNQ=s0-d-e1-ft#https://registreer.odisee.be/public/files/profiles/profiles/61c076ed3b5d001d590001ea/files/banner_studiekeuzetest___2022_10_20_07_45_42.png" style="border:0;height:auto;line-height:100%;outline:none;text-decoration:none;border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px" width="584" height="auto" class="CToWUd" data-bit="iit">
+            <div class=img-container>
+                <img class="header-img" src="https://ci3.googleusercontent.com/meips/ADKq_NbasVeuOFg-wW9KbExCcfk-mhJbbZY0M58Prq0vaVSH6R9-gKKl6E2lWGF6gUSm0ZqCoSjRf1tWg_lyiFQ9ZkBQVQKDV5aoNIfb2LJMFFHsgDbiOyeh2RfQQwPbUbQJSfxNUXd3HQ23qqL__1N0pI3cCiO_UtuNIM9NRdEC_kE9CdKr6QTLaZ1DUDYOotTduc639GkxwJThRTPvnbAcAHlBNQ=s0-d-e1-ft#https://registreer.odisee.be/public/files/profiles/profiles/61c076ed3b5d001d590001ea/files/banner_studiekeuzetest___2022_10_20_07_45_42.png" style="border:0;height:auto;line-height:100%;outline:none;text-decoration:none;border:0;display:block;outline:none;text-decoration:none;height:auto;width:100%;font-size:13px" width="584" height="auto" class="CToWUd" data-bit="iit">
             </div>
         </header>
 

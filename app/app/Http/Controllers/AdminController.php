@@ -57,26 +57,26 @@ class AdminController extends Controller
             }
         }
 
-        return response(['data' => UserResource::collection($users->get())], 200);
+        return response()->json(['data' => UserResource::collection($users->get())], 200);
     }
 
     public function deleteUser($id) {
         $user = User::findOrFail($id);
         $user->delete();
 
-        return response(['message' => 'User deleted'], 200);
+        return response()->json(['message' => 'User deleted'], 200);
     }
 
 
     // Results
     public function getAllResults() {
-        return response(['data' => ResultResource::collection(Result::all())], 200);
+        return response()->json(['data' => ResultResource::collection(Result::all())], 200);
     }
 
     // Answers
     public function getUserAnswers() {
         $questions = Question::with('answers.user')->get();
-        return response(['data' => $questions], 200);
+        return response()->json(['data' => $questions], 200);
     }
 
     // Questions & Answers
@@ -172,5 +172,10 @@ class AdminController extends Controller
         $answer->delete();
 
         return response()->json(['message' => 'Answer has been deleted'], 200);
+    }
+
+    // Suggestions
+    public function getSuggestions() {
+        return response()->json(['data' => []], 200);
     }
 }

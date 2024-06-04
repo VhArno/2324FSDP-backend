@@ -20,9 +20,7 @@ use App\Http\Controllers\QuestionController;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum')->name('logout');
 
 Route::group(['prefix' => '/user', 'middleware' => 'auth:sanctum'], function () {
     Route::get('/', [AuthController::class, 'getUser']);
@@ -65,4 +63,7 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:sanctum'], function ()
     Route::post('/answers', [AdminController::class, 'postAnswer'])->middleware('can:create,App\Models\Answer');
     Route::patch('/answers', [AdminController::class, 'patchAnswer'])->middleware('can:update,App\Models\Answer');
     Route::delete('/answers/{id}', [AdminController::class, 'deleteAnswer'])->middleware('can:delete,App\Models\Answer')->whereNumber('id');
+
+    // Suggestion
+    Route::get('/suggestions', [AdminController::class, 'getSuggestions'])->middleware('can:delete,App\Models\Answer');
 }); 

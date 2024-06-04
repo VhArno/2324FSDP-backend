@@ -2,14 +2,11 @@ h2 {
     font-size: 1.1em;
 }
 
-header {
-    div {
-        width: 80%;
-
-        img {
-            width: 100%;
-        }
-    }
+.img-container {
+    width: 100%;
+}
+.header-img {
+    width: 100%;
 }
 
 main {
@@ -19,4 +16,15 @@ main {
 
 footer {
 
+}
+
+@media (min-width: 45em) {
+    .img-container {
+        width: 80%;
+        margin: auto;
+    }
+    .header-img {
+        width: 80%;
+        margin: auto;
+    }
 }

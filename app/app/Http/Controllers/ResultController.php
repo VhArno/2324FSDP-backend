@@ -18,7 +18,9 @@ class ResultController extends Controller
     function getUserResults(Request $request) {
         $user = $request->user();
 
-        return response(['data' => ResultResource::collection($user->results)], 200);
+        $orderedResults = $user->results()->orderBy('created_at', 'desc')->get();
+
+        return response(['data' => ResultResource::collection($orderedResults)], 200);
     }
 
     function postResult(Request $request) {
@@ -33,6 +35,9 @@ class ResultController extends Controller
         }
 
         $user = $request->user();
+        if (!$user) {
+            $user = User::find(3);
+        }
 
         $result = new Result();
         $result->name = $request->input('name');
