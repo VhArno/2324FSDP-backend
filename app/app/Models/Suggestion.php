@@ -15,6 +15,10 @@ class Suggestion extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function question(): BelongsTo {
+        return $this->belongsTo(Question::class);
+    }
+
     public function operation(): BelongsTo {
         return $this->belongsTo(Operation::class);
     }

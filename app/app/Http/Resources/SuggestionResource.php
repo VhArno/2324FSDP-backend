@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\QuestionResource;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\OperationResource;
 
 class SuggestionResource extends JsonResource
 {
@@ -18,10 +19,10 @@ class SuggestionResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'operation' => $this->operation,
+            'operation' => new OperationResource($this->operation),
             'new_value' => $this->new_value,
-            'question' => new QuestionResource($this->question_id),
-            'user' => new UserResource($this->user_id),
+            'question' => new QuestionResource($this->question),
+            'user' => new UserResource($this->user),
             'created_at' => $this->created_at,
         ];
     }

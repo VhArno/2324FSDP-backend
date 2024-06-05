@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OperationResource;
 use App\Http\Resources\ResultResource;
 use App\Http\Resources\SuggestionResource;
-use App\Http\Resources\OperationResource;
 use App\Models\Answer;
 use App\Models\Question;
 use App\Models\Result;
@@ -180,19 +180,19 @@ class AdminController extends Controller
 
     // Operations
     public function getOperations() {
-        return response()->json(['data' => new OperationResource(Operation::all())], 200);
+        return response()->json(['data' => OperationResource::collection(Operation::orderBy('id')->get())], 200);
     }
 
     // Suggestions
     public function getSuggestions() {
-        return response()->json(['data' => new SuggestionResource(Suggestion::all())], 200);
+        return response()->json(['data' => SuggestionResource::collection(Suggestion::all())], 200);
     }
 
     public function postSuggestions(Request $request) {
         $validator = Validator::make($request->all(), [
-            'operation' => 'required|numeric|in:0,1,2',
+            'operation_id' => 'required|numeric|exists:operations,id',
             'new_value' => 'nullable|string',
-            'question_id' => 'nullabel|numeric|exists:questions,id',
+            'question_id' => 'nullable|numeric|exists:questions,id',
         ]);
 
         if ($validator->fails()) {
@@ -202,23 +202,20 @@ class AdminController extends Controller
         $user = $request->user();
         $suggestion = new Suggestion();
 
-        $suggestion->operation = $request->operation;
-
-        if ($request->filled('new_value')) {
-            $suggestion->new_value = $request->new_value;
-        } else {
-            $suggestion->new_value = null;
-        }
-        if ($request->filled('question_id')) {
-            $suggestion->question_id = $request->question_id;
-        } else {
-            $suggestion->question_id = null;
-        }
-
+        $suggestion->operation_id = $request->input('operation_id');
+        $suggestion->new_value = $request->filled('new_value') ? $request->new_value : null;
+        $suggestion->question_id = $request->filled('question_id') ? $request->question_id : null;
         $suggestion->user_id = $user->id;
 
         $suggestion->save();
 
         return response()->json(['message' => 'Suggestion has been created'], 201);
+    }
+
+    public function deleteSuggestions($id) {
+        $suggestion = Suggestion::findOrFail($id);
+        $suggestion->delete();
+
+        return response()->json(['message' => 'Suggestion has been deleted'], 200);
     }
 }
