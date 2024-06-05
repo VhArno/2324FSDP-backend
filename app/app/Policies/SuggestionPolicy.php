@@ -50,7 +50,7 @@ class SuggestionPolicy
      */
     public function delete(User $user, Suggestion $suggestion): bool
     {
-        //
+        return $user->role->role_name == 'superadmin' || $user->id === $suggestion->user_id;
     }
 
     /**

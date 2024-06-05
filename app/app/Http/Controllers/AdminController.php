@@ -217,8 +217,8 @@ class AdminController extends Controller
         return response()->json(['message' => 'Suggestion has been created'], 201);
     }
 
-    public function deleteSuggestions($id) {
-        $suggestion = Suggestion::findOrFail($id);
+    public function deleteSuggestions(Suggestion $suggestion) {
+        //$suggestion = Suggestion::findOrFail($id);
         $suggestion->delete();
 
         return response()->json(['message' => 'Suggestion has been deleted'], 200);

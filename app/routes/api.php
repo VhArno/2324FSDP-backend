@@ -71,5 +71,5 @@ Route::group(['prefix' => '/admin', 'middleware' => 'auth:sanctum'], function ()
     Route::get('/suggestions', [AdminController::class, 'getSuggestions'])->middleware('can:viewAny,App\Models\Suggestion');
     Route::get('/user/suggestions', [AdminController::class, 'getUserSuggestions'])->middleware('can:viewOwn,App\Models\Suggestion');
     Route::post('/suggestions', [AdminController::class, 'postSuggestions'])->middleware('can:create,App\Models\Suggestion');
-    Route::delete('/suggestions/{id}', [AdminController::class, 'deleteSuggestions'])->middleware('can:viewAny,App\Models\Suggestion')->whereNumber('id');
+    Route::delete('/suggestions/{suggestion}', [AdminController::class, 'deleteSuggestions'])->middleware('can:delete,suggestion')->whereNumber('suggestion');
 }); 
