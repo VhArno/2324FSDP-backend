@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('suggestions', function (Blueprint $table) {
             $table->id();
-            $table->string('operation');
+            $table->foreignId('operation_id')->constrained()->onDelete('cascade');
             $table->text('new_value')->nullable();
-            $table->foreignId('question_id')->constrained()->onDelete('cascade')->nullable();
+            $table->foreignId('question_id')->nullable()->constrained()->onDelete('cascade');
             //$table->foreignId('answer_id')->constrained()->onDelete('cascade')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();

@@ -53,6 +53,10 @@ class User extends Authenticatable
         return $this->hasMany(Result::class);
     }
 
+    public function suggestions(): HasMany {
+        return $this->hasMany(Suggestion::class);
+    }
+
     public function role(): BelongsTo {
         return $this->belongsTo(Role::class);
     }

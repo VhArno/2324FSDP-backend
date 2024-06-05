@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\ResultResource;
 use App\Http\Resources\SuggestionResource;
+use App\Http\Resources\OperationResource;
 use App\Models\Answer;
 use App\Models\Question;
 use App\Models\Result;
 use App\Models\Suggestion;
+use App\Models\Operation;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserResource;
@@ -176,6 +178,11 @@ class AdminController extends Controller
         return response()->json(['message' => 'Answer has been deleted'], 200);
     }
 
+    // Operations
+    public function getOperations() {
+        return response()->json(['data' => new OperationResource(Operation::all())], 200);
+    }
+
     // Suggestions
     public function getSuggestions() {
         return response()->json(['data' => new SuggestionResource(Suggestion::all())], 200);
@@ -196,8 +203,18 @@ class AdminController extends Controller
         $suggestion = new Suggestion();
 
         $suggestion->operation = $request->operation;
-        if ($request->filled('new_value')) $suggestion->operation = $request->operation;
-        if ($request->filled('question_id')) $suggestion->question_id = $request->question_id;
+
+        if ($request->filled('new_value')) {
+            $suggestion->new_value = $request->new_value;
+        } else {
+            $suggestion->new_value = null;
+        }
+        if ($request->filled('question_id')) {
+            $suggestion->question_id = $request->question_id;
+        } else {
+            $suggestion->question_id = null;
+        }
+
         $suggestion->user_id = $user->id;
 
         $suggestion->save();
