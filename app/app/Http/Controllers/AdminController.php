@@ -188,6 +188,11 @@ class AdminController extends Controller
         return response()->json(['data' => SuggestionResource::collection(Suggestion::all())], 200);
     }
 
+    public function getUserSuggestions(Request $request) {
+        $user = $request->user();
+        return response()->json(['data' => SuggestionResource::collection(Suggestion::where('user_id', $user->id)->get())], 200);
+    }
+
     public function postSuggestions(Request $request) {
         $validator = Validator::make($request->all(), [
             'operation_id' => 'required|numeric|exists:operations,id',

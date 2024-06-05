@@ -16,6 +16,11 @@ class SuggestionPolicy
         return $user->role->role_name == 'superadmin';
     }
 
+    public function viewOwn(User $user): bool
+    {
+        return $user->role->role_name == 'admin' || $user->role->role_name == 'superadmin';
+    }
+
     /**
      * Determine whether the user can view the model.
      */
