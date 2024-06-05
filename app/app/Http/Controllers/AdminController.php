@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ResultResource;
+use App\Http\Resources\SuggestionResource;
 use App\Models\Answer;
 use App\Models\Question;
 use App\Models\Result;
+use App\Models\Suggestion;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Resources\UserResource;
@@ -176,6 +178,30 @@ class AdminController extends Controller
 
     // Suggestions
     public function getSuggestions() {
-        return response()->json(['data' => []], 200);
+        return response()->json(['data' => new SuggestionResource(Suggestion::all())], 200);
+    }
+
+    public function postSuggestions(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'operation' => 'required|numeric|in:0,1,2',
+            'new_value' => 'nullable|string',
+            'question_id' => 'nullabel|numeric|exists:questions,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()], 422);
+        }
+
+        $user = $request->user();
+        $suggestion = new Suggestion();
+
+        $suggestion->operation = $request->operation;
+        if ($request->filled('new_value')) $suggestion->operation = $request->operation;
+        if ($request->filled('question_id')) $suggestion->question_id = $request->question_id;
+        $suggestion->user_id = $user->id;
+
+        $suggestion->save();
+
+        return response()->json(['message' => 'Suggestion has been created'], 201);
     }
 }
