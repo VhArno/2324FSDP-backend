@@ -26,7 +26,7 @@ class AdminController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'Invalid request data'], 422);
         }
 
         $users = User::query();
@@ -108,7 +108,7 @@ class AdminController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'Invalid request data'], 422);
         }
 
         $question = Question::findOrFail($request->input('question_id'));
@@ -137,7 +137,7 @@ class AdminController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'Invalid request data'], 422);
         }
 
         $answer = new Answer();
@@ -159,7 +159,7 @@ class AdminController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'Invalid request data'], 422);
         }
 
         $answer = Answer::findOrFail($request->input('answer_id'));
@@ -203,7 +203,7 @@ class AdminController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'Invalid request data'], 422);
         }
 
         $user = $request->user();

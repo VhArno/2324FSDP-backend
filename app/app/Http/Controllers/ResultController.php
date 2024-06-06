@@ -20,7 +20,7 @@ class ResultController extends Controller
 
         $orderedResults = $user->results()->orderBy('created_at', 'desc')->get();
 
-        return response(['data' => ResultResource::collection($orderedResults)], 200);
+        return response()->json(['data' => ResultResource::collection($orderedResults)], 200);
     }
 
     function postResult(Request $request) {
@@ -30,7 +30,7 @@ class ResultController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'Invalid request data'], 422);
         }
 
         $result = new Result();
@@ -48,11 +48,11 @@ class ResultController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'description' => 'nullable|string',
-            'result_id' => 'required|exists:results,id'
+            'result_id' => 'required|numeric|exists:results,id'
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'Invalid request data'], 422);
         }
 
         $user = $request->user();
@@ -64,7 +64,7 @@ class ResultController extends Controller
 
         $result->save();
 
-        return response()->json(['message' => 'Result has been saved'], 201);
+        return response()->json(['message' => 'Result has been updated'], 200);
     }
 
     function sendResult(Request $request) {
@@ -74,13 +74,15 @@ class ResultController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'Invalid request data'], 422);
         }
 
         $user = $request->user() ? $request->user() : new User();
         $specialisation = Specialisation::findOrFail($request->input('specialisation_id'));
 
         Mail::to($request->input('email'))->send(new ResultMail($specialisation, $user));
+
+        return response()->json(['message' => 'Email send'], 200);
     }
 
     function postUserAnswers(Request $request) {
@@ -90,7 +92,7 @@ class ResultController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'Invalid request data'], 422);
         }
 
         $user = $request->user();

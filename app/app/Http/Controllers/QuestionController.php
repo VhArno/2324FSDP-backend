@@ -11,14 +11,14 @@ use App\Models\Specialisation;
 class QuestionController extends Controller
 {
     public function getQuestions() {
-        return response(['data' => QuestionResource::collection(Question::all())]);
+        return response()->json(['data' => QuestionResource::collection(Question::all())], 200);
     }
 
     public function getQuestion($id) {
-        return response(['data' => new QuestionResource(Question::findOrFail($id))]);
+        return response()->json(['data' => new QuestionResource(Question::findOrFail($id))], 200);
     }
 
     public function getSpecialisations() {
-        return response(['data' => SpecialisationResource::collection(Specialisation::all())]);
+        return response()->json(['data' => SpecialisationResource::collection(Specialisation::all())], 200);
     }
 }

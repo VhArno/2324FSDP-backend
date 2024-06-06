@@ -12,20 +12,20 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    public function login(Request $request): Response {
+    public function login(Request $request) {
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $user->tokens()->delete();
-            return response(['message' => 'The user has been authenticated successfully'], 200);
+            return response()->json(['message' => 'The user has been authenticated successfully'], 200);
         }
-        return response(['message' => 'The provided credentials do not match our records.'], 401);
+        return response()->json(['message' => 'The provided credentials do not match our records.'], 401);
     }
 
-    public function logout(Request $request): Response {
+    public function logout(Request $request) {
         Auth::guard('web')->logout();
         $request->session()->invalidate();
-        return response(['message' => 'The user has been logged out successfully'], 200);
+        return response()->json(['message' => 'The user has been logged out successfully'], 200);
     }
 
     public function register(Request $request) {
@@ -37,7 +37,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'Incorrect request data'], 422);
         }
 
         $user = new User();
@@ -53,7 +53,7 @@ class AuthController extends Controller
     }
 
     public function getUser(Request $request) {
-        return response(['data' => new UserResource($request->user())]);
+        return response()->json(['data' => new UserResource($request->user())], 200);
     }
 
     public function patchUser(Request $request) {
@@ -65,7 +65,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->errors()], 422);
+            return response()->json(['message' => 'Invalid request data'], 422);
         }
 
         $user = $request->user();
@@ -83,6 +83,6 @@ class AuthController extends Controller
     public function deleteUser(Request $request) {
         $user = $request->user();
         $user->delete();
-        return response(['message' => 'User deleted'], 200);
+        return response()->json(['message' => 'User deleted'], 200);
     }
 }
