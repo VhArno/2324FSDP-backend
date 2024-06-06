@@ -155,6 +155,7 @@ class AdminController extends Controller
             'answer_id' => 'required|numeric|exists:answers,id',
             'answer' => 'required|string',
             'weight' => 'required|numeric',
+            'specialisation_id' => 'required|numeric|exists:specialisations,id'
         ]);
 
         if ($validator->fails()) {
@@ -165,10 +166,11 @@ class AdminController extends Controller
         
         if ($request->filled('answer')) $answer->answer = $request->input('answer');
         if ($request->filled('weight')) $answer->weight = $request->input('weight');
+        if ($request->filled('specialisation_id')) $answer->specialisation_id = $request->input('specialisation_id');
 
         $answer->save();
 
-        return response()->json(['message' => 'Answer has been updated'], 204);
+        return response()->json(['message' => 'Answer has been updated'], 200);
     }
 
     public function deleteAnswer($id) {
