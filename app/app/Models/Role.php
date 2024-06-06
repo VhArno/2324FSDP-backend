@@ -10,6 +10,8 @@ class Role extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     /* Relations */
     public function users(): HasMany {
         return $this->hasMany(User::class);

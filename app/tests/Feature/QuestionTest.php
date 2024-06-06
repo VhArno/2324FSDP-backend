@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Question;
 use App\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -10,6 +11,8 @@ use App\Models\User;
 
 class QuestionTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * Test the get route of questions
      */
@@ -24,12 +27,11 @@ class QuestionTest extends TestCase
      * Test the post route of questions as an admin
      */
     public function test_post_question_as_admin(): void {
-        $user = User::factory()->create();
-        $role = Role::factory()->create();
-        $role->id = 5;
-        $role->role_name = 'admin';
+        $role = Role::factory()->create(['role_name' => 'admin']);
 
-        $user->role = $role;
+        $user = User::factory()->create();
+        $user->role()->associate($role);
+        $user->save();
         
         $response = $this->actingAs($user)
             ->withSession(['banned' => false])
@@ -49,9 +51,9 @@ class QuestionTest extends TestCase
         $response = $this->postJson('/api/admin/questions', ['question' => 'Hoe gaat het vandaag?']);
 
         $response
-            ->assertStatus(422)
+            ->assertStatus(401)
             ->assertJson([
-                'message' => 'error adding question',
+                'message' => 'Unauthenticated.',
             ]);
     }
 
@@ -59,7 +61,20 @@ class QuestionTest extends TestCase
      * Test the patch route of questions
      */
     public function test_patch_question(): void {
-        $response = $this->patchJson('/api/admin/questions', ['question_id' => 1,'question' => 'Hoe gaat het vandaag?']);
+        $role = Role::factory()->create(['role_name' => 'admin']);
+
+        $user = User::factory()->create();
+        $user->role()->associate($role);
+        $user->save();
+
+        $question = Question::factory()->create();
+        
+        $response = $this->actingAs($user)
+            ->withSession(['banned' => false])
+            ->patchJson('/api/admin/questions/', [
+                'question_id' => $question->id,
+                'question' => 'Hoe gaat het vandaag?',
+            ]);
 
         $response
             ->assertStatus(200)
@@ -69,20 +84,41 @@ class QuestionTest extends TestCase
     }
 
     /**
+     * Test the patch route of questions as user
+     */
+    public function test_patch_question_as_user(): void {
+        $question = Question::factory()->create();
+        
+        $response = $this->patchJson('/api/admin/questions/', [
+                'question_id' => $question->id,
+                'question' => 'Hoe gaat het vandaag?',
+            ]);
+
+        $response
+            ->assertStatus(401)
+            ->assertJson([
+                'message' => 'Unauthenticated.',
+            ]);
+    }
+
+    /**
         * Test the delete route of questions 
     */
     public function test_delete_question(): void {
+        $role = Role::factory()->create(['role_name' => 'admin']);
+        
         $user = User::factory()->create();
-        $role = Role::factory()->create();
-        $role->id = 5;
-        $role->role_name = 'admin';
+        $user->role()->associate($role);
+        $user->save();
+
+        $question = Question::factory()->create();
 
         $response = $this->actingAs($user)
             ->withSession(['banned' => false])
-            ->postJson('/api/admin/questions/10');
+            ->deleteJson('/api/admin/questions/' . $question->id);
 
         $response
-            ->assertStatus(201)
+            ->assertStatus(200)
             ->assertJson([
                 'message' => 'Question has been deleted',
             ]);
@@ -92,12 +128,17 @@ class QuestionTest extends TestCase
         * Test the delete route of questions with invalid id
     */
     public function test_invalid_delete_question(): void {
-        $response = $this->deleteJson('/api/admin/questions/100');
+        $role = Role::factory()->create(['role_name' => 'admin']);
+        
+        $user = User::factory()->create();
+        $user->role()->associate($role);
+        $user->save();
+
+        $response = $this->actingAs($user)
+            ->withSession(['banned' => false])
+            ->deleteJson('/api/admin/questions/200');
 
         $response
-            ->assertStatus(422)
-            ->assertJson([
-                'message' => 'Question has been deleted',
-            ]);
+            ->assertStatus(404);
     }
 }
